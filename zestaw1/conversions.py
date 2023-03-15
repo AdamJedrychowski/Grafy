@@ -68,7 +68,7 @@ def lst2incidence(lst):
     - lst - dcitionary parameter that represents adjacency list (with node numbers from 1)
     - returns: matrix (np.ndarray) that is incidence matrix
     - raises NotSimpleGraph if the graph represented by list is not simple"""
-    
+
     check_if_simple_lst(lst)
 
     s = max(lst)
@@ -105,12 +105,13 @@ if __name__ == '__main__':
 
     graphs = [{1: [2,3,3], 2:[1], 3:[1,1]},\
     {1:[1,2], 2: [1]}, {1:[3], 2:[1], 3:[1]},\
-    {1:[2,3,4], 2:[1], 3:[1,4], 4:[1,3]}]
+    {1:[2,3,4], 2:[1], 3:[1,4], 4:[1,3]},
+    {1:[], 2:[3], 3:[2]}, ]
 
     for l in graphs:
         try:
             # check_if_simple_lst(l)
-            print(lst2incidence(l))
+            print(lst2incidence(l), '\n')
         except Exception as e:
             print(e,'\n')
         # else:
