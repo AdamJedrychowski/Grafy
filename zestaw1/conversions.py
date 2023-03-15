@@ -25,7 +25,7 @@ def check_if_simple_adj(matrix):
             raise NotSimpleGraph(message="This is not simple graph! Countains loop.",r=matrix)
 
 def check_if_simple_lst(lst):
-    """The function checks if the adjacency list (parameter as dict) represents simple graph"""
+    """The function checks if the adjacency list (parameter as dict - nodes counting from 1) represents simple graph"""
 
     for k in lst:
         if k in lst[k]:
@@ -64,7 +64,25 @@ def adj2incidence(matrix):
 
 
 def lst2incidence(lst):
+    """Conversion from adjacency list into incidence matrix
+    - lst - dcitionary parameter that represents adjacency list (with node numbers from 1)
+    - returns: matrix (np.ndarray) that is incidence matrix
+    - raises NotSimpleGraph if the graph represented by list is not simple"""
+    
     check_if_simple_lst(lst)
+
+    s = max(lst)
+    e = int( sum((len(l) for l in lst.values())) )//2
+    inc = np.zeros((s,e), dtype=int)
+    edge_n=0
+
+    for i in sorted(lst):
+        for j in lst[i]:
+            if j > i:
+                inc[i-1,edge_n]=1
+                inc[j-1,edge_n]=1
+                edge_n += 1
+    return inc
 
 
 
@@ -86,12 +104,14 @@ if __name__ == '__main__':
 
 
     graphs = [{1: [2,3,3], 2:[1], 3:[1,1]},\
-    {1:[1,2], 2: [1]}, {1:[3], 2:[1], 3:[1]}]
+    {1:[1,2], 2: [1]}, {1:[3], 2:[1], 3:[1]},\
+    {1:[2,3,4], 2:[1], 3:[1,4], 4:[1,3]}]
 
     for l in graphs:
         try:
-            check_if_simple_lst(l)
+            # check_if_simple_lst(l)
+            print(lst2incidence(l))
         except Exception as e:
             print(e,'\n')
-        else:
-            print("OK\n")
+        # else:
+        #     print("OK\n")
