@@ -25,6 +25,6 @@ def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
     pos = nx.circular_layout(G)
     nx.draw_networkx_nodes(G, pos, node_color='lightblue', node_size=500)
     nx.draw_networkx_edges(G, pos, edge_color='gray', width=2)
-    labels = {i:j for i,j in enumerate(graph.keys())}
+    labels = {i:j for i,j in enumerate(graph.keys(), start=1)}
     nx.draw_networkx_labels(G, pos, labels)
     plt.show()

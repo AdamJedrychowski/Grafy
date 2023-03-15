@@ -6,18 +6,17 @@ import numpy as np
 
 def graphical_sequence(nodes):
     """The function checks if the sequence of integers is a graphical sequence
-    - nodes - string which represents sequence of integers, example: 2 2 4 3 7 3 1 1
+    - nodes - list of integers, example: 2 2 4 3 7 3 1 1
     - returns: False, None if sequence is not graphical else True and dictionary {node: [neighbors]}"""
     negative = 0
-    nodes = list(map(int, nodes.split()))
     for i in nodes:
         if i % 2 == 1:
             negative += 1
     if negative % 2 == 1:
         return False, None
 
-    neighbors = {i: [] for i in range(len(nodes))}
-    nodes = [[i, j] for i, j in enumerate(nodes)]
+    neighbors = {i: [] for i in range(1, len(nodes)+1)}
+    nodes = [[i, j] for i, j in enumerate(nodes, start=1)]
     nodes.sort(reverse=True, key=lambda x: x[1])
     while True:
         if not nodes or not any(list(zip(*nodes))[1]):
@@ -38,6 +37,7 @@ def graphical_sequence(nodes):
 if __name__ == '__main__':
     # 1 3 1 2 possible input
     seq = input("Podaj listę stopni wierzchołków grafu:\t")
+    seq = list(map(int, seq.split()))
     flag, graph = graphical_sequence(seq)
     if flag:
         draw_graph(graph)
