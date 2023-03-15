@@ -1,33 +1,54 @@
 import numpy as np
 
-class NotSimpleGrapth(Exception):
-    def __init__(self, message='', *, m=None):
-        super().__init__(f'{message}\nMatrix:\n{m}' if m is not None else message)
+class NotSimpleGraph(Exception):
+    def __init__(self, message='', *, r=None):
+        super().__init__(f'{message}\nRepresentation:\n{r}' if r is not None else message)
         self.message=message
-        self.matrix=m
+        self.represent=r
 
-def check_if_simpe(matrix):
-    """The function checks if the matrix (parameter) represents simple graph"""
+def check_if_simple_adj(matrix):
+    """The function checks if the adjacency matrix (parameter) represents simple graph"""
 
+    # symetric matrix and even sum of degrees
     if not np.allclose(matrix, matrix.T) or matrix.sum()%2 != 0:
-        raise NotSimpleGrapth(message="This is not simple graph!",m=matrix)
+        raise NotSimpleGraph(message="This is not simple graph! Some egde is direct.",r=matrix)
     
+    # without multiple egdes
     for r in matrix:
         for v in r:
             if v != 0 and v != 1:
-                raise NotSimpleGrapth(message="This is not simple graph!",m=matrix)
+                raise NotSimpleGraph(message="This is not simple graph! Contains multiple egde.",r=matrix)
     
+    # without loops
     for d in matrix.diagonal():
         if d!=0:
-            raise NotSimpleGrapth(message="This is not simple graph!",m=matrix)
+            raise NotSimpleGraph(message="This is not simple graph! Countains loop.",r=matrix)
+
+def check_if_simple_lst(lst):
+    """The function checks if the adjacency list (parameter as dict - nodes counting from 1) represents simple graph"""
+
+    for k in lst:
+        if k in lst[k]:
+            raise NotSimpleGraph(message="This is not simple graph! - Contains loop.",r=lst)
+        
+        prev = None
+        for node in sorted(lst[k]):
+            if node == prev:
+               raise NotSimpleGraph(message="This is not simple graph! - Contains multiple egde.",r=lst)
+            prev = node
+
+            if k not in lst[node]:
+                raise NotSimpleGraph(message="This is not simple graph! Some egde is direct.",r=lst)
+
 
 
 def adj2incidence(matrix):
     """Conversion from adjacency matrix into incidence matrix
     - matrix - parameter of type np.ndarray that represents adjacency matrix
-    - returns: matrix (np.ndarray) that is incidence matrix"""
+    - returns: matrix (np.ndarray) that is incidence matrix
+    - raises NotSimpleGraph if the graph represented by matrix is not simple"""
 
-    check_if_simpe(matrix)
+    check_if_simple_adj(matrix)
 
     s = len(matrix)
     inc = np.zeros((s, int(matrix.sum())//2), dtype=int)
@@ -41,6 +62,27 @@ def adj2incidence(matrix):
     
     return inc
 
+
+def lst2incidence(lst):
+    """Conversion from adjacency list into incidence matrix
+    - lst - dcitionary parameter that represents adjacency list (with node numbers from 1)
+    - returns: matrix (np.ndarray) that is incidence matrix
+    - raises NotSimpleGraph if the graph represented by list is not simple"""
+
+    check_if_simple_lst(lst)
+
+    s = max(lst)
+    e = int( sum((len(l) for l in lst.values())) )//2
+    inc = np.zeros((s,e), dtype=int)
+    edge_n=0
+
+    for i in sorted(lst):
+        for j in lst[i]:
+            if j > i:
+                inc[i-1,edge_n]=1
+                inc[j-1,edge_n]=1
+                edge_n += 1
+    return inc
 
 
 
@@ -59,3 +101,18 @@ if __name__ == '__main__':
             print(adj2incidence(m), '\n')
         except Exception as e:
             print(e, '\n')
+
+
+    graphs = [{1: [2,3,3], 2:[1], 3:[1,1]},\
+    {1:[1,2], 2: [1]}, {1:[3], 2:[1], 3:[1]},\
+    {1:[2,3,4], 2:[1], 3:[1,4], 4:[1,3]},
+    {1:[], 2:[3], 3:[2]}, ]
+
+    for l in graphs:
+        try:
+            # check_if_simple_lst(l)
+            print(lst2incidence(l), '\n')
+        except Exception as e:
+            print(e,'\n')
+        # else:
+        #     print("OK\n")
