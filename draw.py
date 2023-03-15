@@ -6,6 +6,7 @@ class Code(Enum):
     ADJACENCY_MATRIX = 1
     MATRIX_INCIDENT = 2
     NEIGHBORHOOD_LIST = 3
+    GRAPHICAL_SEQUENCE = 4
 
 
 def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
