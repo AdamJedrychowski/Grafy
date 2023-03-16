@@ -130,6 +130,42 @@ def inc2list(matrix):
 
 
 
+def lst2adj(lst):
+    """Conversion from adjacency list into adjacency matrix
+    - lst - dcitionary parameter that represents adjacency list (with node numbers from 1)
+    - returns: matrix (np.ndarray) that is adjacency matrix
+    - raises NotSimpleGraph if the graph represented by list is not simple"""
+
+    check_if_simple_lst(lst)
+
+    size = max(lst)
+    inc = np.zeros((size, size), dtype=int)
+
+    for i in lst:
+        for j in lst[i]:
+            inc[i-1][j-1]=1
+
+    return inc
+
+def adj2lst(matrix):
+    """Conversion from adjacency matrix into adjacency list
+    - matrix - parameter of type np.ndarray that represents adjacency matrix (rows, cols - number of vertices)
+    - returns: list (dictionary) that is adjacency list
+    - raises NotSimpleGraph if the graph represented by matrix is not simple"""
+
+    check_if_simple_adj(matrix)
+
+    rows, cols = matrix.shape[:2]
+    inc = {}
+
+    for i in range(rows):
+        key = i+1
+        vertices = [j+1 for j in range(cols) if matrix[i][j] == 1]
+        inc[key] = vertices
+
+    return inc
+
+
 if __name__ == '__main__':
     graphs = [np.array([[1,2],[3,4]]),\
     np.array([[1,2],[2,1]]),\
@@ -191,3 +227,37 @@ if __name__ == '__main__':
             print(inc2list(m))
         except NotSimpleGraph as e:
             print(e, '\n')
+
+
+    graphs = [{1: [2,3,3], 2:[1], 3:[1,1]},\
+        {1:[1,2], 2: [1]}, {1:[3], 2:[1], 3:[1]},\
+        {1:[2,3,4], 2:[1,3,4,5], 3:[1,2,5], 4:[1,2,5], 5:[2,3,4]},
+        {1:[], 2:[3], 3:[2]}, ]
+
+    print('* Adjacency list to adjacency matrix *', '\n')
+    for l in graphs:
+        try:
+            print(lst2adj(l), '\n')
+        except Exception as e:
+            print(e,'\n')
+
+
+
+    graphs = [np.array([[1,2],[3,4]]),\
+    np.array([[1,2],[2,1]]),\
+    np.array([[1,0],[0,1]]),\
+    np.array([[0,1],[1,0]]),\
+    np.array([[0,1,1,1],[1,0,0,0],[1,0,0,1],[1,0,1,0]]),\
+    np.array([[0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],[1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0],[0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1],[0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0],[1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0],[1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],[0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0],[0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1],[0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0]]),\
+    np.array([[0,1,1,1,0],[1,0,1,1,1],[1,1,0,0,1],[1,1,0,0,1],[0,1,1,1,0]]),\
+    np.array([[0, 0, 0],[0,0,1],[0,1,0]])
+    ]
+
+    print('* Adjacency matrix to adjacency list *', '\n')
+    for m in graphs:
+        try:
+            print(adj2lst(m), '\n')
+        except Exception as e:
+            print(e, '\n')
+
+
