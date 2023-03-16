@@ -59,7 +59,7 @@ def check_if_simple_inc(matrix):
                 raise NotSimpleGraph(message="Unknown coding! Only 0/1 values supported.",r=matrix)
     
     for i in range(len(matrix[0])):
-        for j in range(i,len(matrix[0])):
+        for j in range(i+1,len(matrix[0])):
             if np.allclose(matrix[:,i], matrix[:,j]):
                 raise NotSimpleGraph(message="This is not simple graph! Multiple edge found.",r=matrix)
 
@@ -108,6 +108,25 @@ def lst2incidence(lst):
                 edge_n += 1
     return inc
 
+def inc2list(matrix):
+    """Conversion from incidence matrix into adjacency list
+    - matrix - parameter of type np.ndarray that represents incidence matrix (rows - nodes, columns - edges)
+    - returns: lst (dictionary) that is adjacency list
+    - raises NotSimpleGraph if the graph represented by matrix is not simple"""
+
+    check_if_simple_inc(matrix)
+
+    lst = {i+1: [] for i in range(len(matrix))}
+
+    for edge in matrix.T:
+        i, = edge.nonzero() # coma for unpacking a tuple
+        lst[i[0] +1].append(i[1] +1)
+        lst[i[1] +1].append(i[0] +1)
+    
+    for l in lst.values():
+        l.sort()
+
+    return lst
 
 
 
@@ -124,7 +143,7 @@ if __name__ == '__main__':
     for m in graphs:
         try:
             print(adj2incidence(m), '\n')
-        except Exception as e:
+        except NotSimpleGraph as e:
             print(e, '\n')
 
 
@@ -137,7 +156,7 @@ if __name__ == '__main__':
         try:
             # check_if_simple_lst(l)
             print(lst2incidence(l), '\n')
-        except Exception as e:
+        except NotSimpleGraph as e:
             print(e,'\n')
         # else:
         #     print("OK\n")
@@ -149,10 +168,23 @@ if __name__ == '__main__':
     np.array([[1, 1],[1,1], [0,1]]),\
 
     np.array([[1, 0, 0],[1,0,1], [0,0,1]]),\
+    np.array([[1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0],\
+        [1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0],\
+        [0,1,1,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0],\
+        [0,0,1,1,0,0,0,0,0,0,0,0,0,1,0,1,0,0],\
+        [0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0],\
+        [0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0],\
+        [0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,0],\
+        [0,0,0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,1],\
+        [0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,1,0],\
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],\
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0],\
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],\
+        ])
     ]
 
     for m in graphs:
         try:
-            check_if_simple_inc(m)
-        except Exception as e:
+            print(inc2list(m))
+        except NotSimpleGraph as e:
             print(e, '\n')
