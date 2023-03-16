@@ -130,7 +130,7 @@ def inc2list(matrix):
 
 
 
-def lst2adj(lst):
+def lst2adjacency(lst):
     """Conversion from adjacency list into adjacency matrix
     - lst - dcitionary parameter that represents adjacency list (with node numbers from 1)
     - returns: matrix (np.ndarray) that is adjacency matrix
@@ -139,15 +139,15 @@ def lst2adj(lst):
     check_if_simple_lst(lst)
 
     size = max(lst)
-    inc = np.zeros((size, size), dtype=int)
+    adj = np.zeros((size, size), dtype=int)
 
     for i in lst:
         for j in lst[i]:
-            inc[i-1][j-1]=1
+            adj[i-1][j-1]=1
 
-    return inc
+    return adj
 
-def adj2lst(matrix):
+def adj2list(matrix):
     """Conversion from adjacency matrix into adjacency list
     - matrix - parameter of type np.ndarray that represents adjacency matrix (rows, cols - number of vertices)
     - returns: list (dictionary) that is adjacency list
@@ -156,14 +156,30 @@ def adj2lst(matrix):
     check_if_simple_adj(matrix)
 
     rows, cols = matrix.shape[:2]
-    inc = {}
+    lst = {}
 
     for i in range(rows):
         key = i+1
         vertices = [j+1 for j in range(cols) if matrix[i][j] == 1]
-        inc[key] = vertices
+        lst[key] = vertices
 
-    return inc
+    return lst
+
+
+def inc2adjacency(matrix):
+    """Conversion from incidence matrix into adjacency matrix
+    - matrix - parameter of type np.ndarray that represents adjacency matrix (rows, cols - number of vertices)
+    - returns: matrix (np.ndarray) that is adjacency matrix
+    - raises NotSimpleGraph if the graph represented by matrix is not simple"""
+
+    check_if_simple_inc(matrix)
+
+    list = inc2list(matrix)
+    adj = lst2adjacency(list)
+
+    return adj
+
+
 
 
 if __name__ == '__main__':
@@ -237,7 +253,7 @@ if __name__ == '__main__':
     print('* Adjacency list to adjacency matrix *', '\n')
     for l in graphs:
         try:
-            print(lst2adj(l), '\n')
+            print(lst2adjacency(l), '\n')
         except Exception as e:
             print(e,'\n')
 
@@ -256,8 +272,18 @@ if __name__ == '__main__':
     print('* Adjacency matrix to adjacency list *', '\n')
     for m in graphs:
         try:
-            print(adj2lst(m), '\n')
+            print(adj2list(m), '\n')
         except Exception as e:
             print(e, '\n')
 
+    graphs = [np.array([[1,0,0,0,0,0,1,1],[1,1,1,1,0,0,0,0],[0,0,0,1,1,0,0,1],[0,1,0,0,0,1,1,0],[0,0,1,0,1,1,0,0]]),\
+    np.array([[1,0, 2],[1,1,0], [0,1,0]]),\
+    
+    ]
 
+    print('* Incidence matrix to adjacency matrix *', '\n')
+    for m in graphs:
+        try:
+            print(inc2adjacency(m), '\n')
+        except Exception as e:
+            print(e, '\n')
