@@ -7,7 +7,7 @@ class NotSimpleGraph(Exception):
         self.represent=r
 
 def check_if_simple_adj(matrix):
-    """The function checks if the adjacency matrix (parameter) represents simple graph"""
+    """The function checks if the adjacency matrix (parameter) represents a simple graph"""
 
     # symetric matrix and even sum of degrees
     if not np.allclose(matrix, matrix.T) or matrix.sum()%2 != 0:
@@ -25,7 +25,7 @@ def check_if_simple_adj(matrix):
             raise NotSimpleGraph(message="This is not simple graph! Countains loop.",r=matrix)
 
 def check_if_simple_lst(lst):
-    """The function checks if the adjacency list (parameter as dict - nodes counting from 1) represents simple graph"""
+    """The function checks if the adjacency list (parameter as dict - nodes counting from 1) represents a simple graph"""
 
     for k in lst:
         if k in lst[k]:
@@ -39,6 +39,30 @@ def check_if_simple_lst(lst):
 
             if k not in lst[node]:
                 raise NotSimpleGraph(message="This is not simple graph! Some egde is direct.",r=lst)
+
+def check_if_simple_inc(matrix):
+    """The function checks if the incidence matrix (parameter as np.ndarray) represents a simple graph"""
+
+    for i in range(len(matrix[0])):
+        if sum(matrix[:,i]) > 2:
+            raise NotSimpleGraph(message="This is not simple graph! This is a hypergraph.",r=matrix)
+        elif sum(matrix[:,i]) == 1:
+            raise NotSimpleGraph(message="This is not simple graph! Only one node in the egde.",r=matrix)
+        elif sum(matrix[:,i]) == 0:
+            raise NotSimpleGraph(message="Wrong coding! And empty edge detected.",r=matrix)    
+        elif sum(matrix[:,i]) < 0:
+            raise NotSimpleGraph(message="Unknown coding! Negative numbers.",r=matrix)
+    
+    for row in matrix:
+        for v in row:
+            if v!=1 and v!=0:
+                raise NotSimpleGraph(message="Unknown coding! Only 0/1 values supported.",r=matrix)
+    
+    for i in range(len(matrix[0])):
+        for j in range(i,len(matrix[0])):
+            if np.allclose(matrix[:,i], matrix[:,j]):
+                raise NotSimpleGraph(message="This is not simple graph! Multiple edge found.",r=matrix)
+
 
 
 
@@ -94,6 +118,7 @@ if __name__ == '__main__':
     np.array([[0,1],[1,0]]),\
     np.array([[0,1,1,1],[1,0,0,0],[1,0,0,1],[1,0,1,0]]),\
     np.array([[0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],[1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0],[0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1],[0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0],[1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0],[1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],[0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0],[0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1],[0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0]]),\
+    np.array([[0, 0, 0],[0,0,1],[0,1,0]])
     ]
 
     for m in graphs:
@@ -116,3 +141,18 @@ if __name__ == '__main__':
             print(e,'\n')
         # else:
         #     print("OK\n")
+
+    
+    graphs = [np.array([[1,0],[1,1]]),\
+    np.array([[1,0, 2],[1,1,0], [0,1,0]]),\
+    np.array([[1, 1, 0],[1,1,1], [0,0,1]]),\
+    np.array([[1, 1],[1,1], [0,1]]),\
+
+    np.array([[1, 0, 0],[1,0,1], [0,0,1]]),\
+    ]
+
+    for m in graphs:
+        try:
+            check_if_simple_inc(m)
+        except Exception as e:
+            print(e, '\n')
