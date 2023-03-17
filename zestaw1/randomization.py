@@ -1,6 +1,6 @@
 import random
 import numpy as np
-import conversions
+from zestaw1 import conversions
 
 
 def randomize_lst(n, l):
