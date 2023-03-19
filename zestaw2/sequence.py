@@ -4,7 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from draw import draw_graph, Code
 import random
 import math
-import time
+from zestaw1.conversions import inc2list, adj2list
 
 def graphical_sequence(nodes):
     """The function checks if the sequence of integers is a graphical sequence
@@ -36,17 +36,15 @@ def graphical_sequence(nodes):
         nodes.sort(reverse=True, key=lambda x: x[1])
 
 
-def randomize(nodes, shuffle_num, coding=Code.NEIGHBORHOOD_LIST):
+def randomize(nodes, shuffle_num=1, coding=Code.NEIGHBORHOOD_LIST):
     """The function randomizes graph edges
     - nodes - representation of graph
     - shuffle_num - number of shuffles
     - coding - which representation is passed, values from Code"""
     if coding == Code.ADJACENCY_MATRIX:
-        # TODO function to cast adjacency matrix to neighborhood list
-        pass
+        adj2list(nodes)
     elif coding == Code.MATRIX_INCIDENT:
-        # TODO function to cast matrix incident to neighborhood list
-        pass
+        inc2list(nodes)
     elif coding == Code.GRAPHICAL_SEQUENCE:
         _, nodes = graphical_sequence(nodes)
 
@@ -67,7 +65,7 @@ def randomize(nodes, shuffle_num, coding=Code.NEIGHBORHOOD_LIST):
         tmp[tmp.index(edges[0][0])] = edges[1][1]
         tmp = nodes[edges[1][1]]
         tmp[tmp.index(edges[1][0])] = edges[0][1]
-        
+
     draw_graph(nodes)
 
 

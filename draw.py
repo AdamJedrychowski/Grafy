@@ -1,6 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from enum import Enum
+from zestaw1.conversions import inc2list, adj2list
+
 
 class Code(Enum):
     ADJACENCY_MATRIX = 1
@@ -14,12 +16,10 @@ def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
     - graph - representation of graph
     - coding - which representation is passed, values from Code"""
     if coding == Code.ADJACENCY_MATRIX:
-        # TODO function to cast adjacency matrix to neighborhood list
-        pass
+        graph = adj2list(graph)
     elif coding == Code.MATRIX_INCIDENT:
-        # TODO function to cast matrix incident to neighborhood list
-        pass
-    
+        graph = inc2list(graph)
+
     G = nx.Graph()
     G.add_nodes_from(graph.keys())
     G.add_edges_from([(i,j) for i in graph.keys() for j in graph[i]])
