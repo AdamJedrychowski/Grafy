@@ -8,6 +8,10 @@ import draw
 import numpy as np
 
 def dfs(graph, start=1, visited=None):
+    """recursive function which checks if graph is connected
+    - graph - neighborhood list
+    - start - starting node
+    - visited - set of visited nodes"""
     if visited is None:
         visited = set()
     visited.add(start)
@@ -16,12 +20,14 @@ def dfs(graph, start=1, visited=None):
     return len(visited) == len(graph)
 
 def generate_connected_graph(n):
+    """function which generates random connected graph
+    - n - number of nodes"""
     while True:
         graph = randomize_lst(n, random.randint(n-1, n*(n-1)/2))
         if dfs(graph):
             break
     graph = lst2adjacency(graph)
-    graph = np.array([[random.randint(1,10) if j else sys.maxsize for j in i] for i in graph])
+    graph = np.array([[random.randint(1,10) if j else float('inf') for j in i] for i in graph])
     draw.draw_graph(graph, coding=draw.Code.WEIGHTED_GRAPH)
 
 
