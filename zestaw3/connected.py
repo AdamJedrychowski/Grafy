@@ -27,8 +27,19 @@ def generate_connected_graph(n):
         if dfs(graph):
             break
     graph = lst2adjacency(graph)
-    graph = np.array([[random.randint(1,10) if j else np.inf for j in i] for i in graph])
-    draw.draw_graph(graph, coding=draw.Code.WEIGHTED_GRAPH)
+
+    length = len(graph)
+    matrix_graph = np.full((length, length), np.inf)
+    for i in range(length):
+        for j in range(i+1, length):
+            if graph[i][j]:
+                rand = random.randint(1,10)
+                matrix_graph[i][j] = rand
+                matrix_graph[j][i] = rand
+
+    draw.draw_graph(matrix_graph, coding=draw.Code.WEIGHTED_GRAPH)
+    print(matrix_graph)
+    return matrix_graph
 
 
 if __name__ == '__main__':
