@@ -66,8 +66,15 @@ def dijkstra(beg, matrix, show=True):
 
 
 def shortest_path_matrix(graph):
-    for i in range(1, len(graph)+1):
-        print(dijkstra(i, graph, False))
+    """Algorithm to create matrix of paths cost from each node to others
+    - graph - adjacency matrix (with weights) of the graph (np.ndarray)
+    - matrix - conatins paths cost from each node to others"""
+    matrix = []
+    for i in range(len(graph)):
+        matrix.append(dijkstra(i+1, graph, False))
+        print(matrix[i])
+
+    return matrix
 
 
 if __name__ == '__main__':
@@ -80,6 +87,6 @@ if __name__ == '__main__':
                 [5, 1, np.Inf, np.Inf, np.Inf, np.Inf, np.Inf]], dtype=float)
 
     dijkstra(1, G)
-    
+
     print()
     shortest_path_matrix(G)
