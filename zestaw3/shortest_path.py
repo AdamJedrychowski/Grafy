@@ -51,30 +51,51 @@ def dijkstra(beg, matrix, show=True):
             
             relax(u,v,matrix, ds=ds, ps=ps)
 
-    if show:
-        for i in range(ps.size):
-            path = [i,]
+    all_paths = []
+    for i in range(ps.size):
+        path = [i,]
             
-            while not np.isnan(ps[path[-1]]):
-                path.append(int(ps[path[-1]]))
-                path[-2] += 1
-            path[-1] += 1
+        while not np.isnan(ps[path[-1]]):
+            path.append(int(ps[path[-1]]))
+            path[-2] += 1
+        path[-1] += 1
 
+        all_paths.append(path)
+        if show:
             print(f'{beg} -> {i+1}: {list(reversed(path))}; len: {int(ds[i])}')
     
-    return ds
+    return all_paths, ds
 
 
-def shortest_path_matrix(graph):
+def shortest_path_matrix(graph, show=True):
     """Algorithm to create matrix of paths cost from each node to others
     - graph - adjacency matrix (with weights) of the graph (np.ndarray)
     - matrix - conatins paths cost from each node to others"""
     matrix = []
     for i in range(len(graph)):
-        matrix.append(dijkstra(i+1, graph, False))
-        print(matrix[i])
+        matrix.append(dijkstra(i+1, graph, False)[1])
+        if show:
+            print(matrix[i])
 
     return matrix
+
+def graph_center(graph):
+    paths_cost = shortest_path_matrix(graph, False)
+    sum = (-1, np.Inf)
+    for i in range(len(paths_cost)):
+        tmp = np.sum(paths_cost[i])
+        if sum[1] > tmp:
+            sum = (i+1, tmp)
+    print(f'Centrum: {sum[0]}')
+
+def graph_minimax(graph):
+    length = shortest_path_matrix(graph, False)
+    minmax = (-1, np.Inf)
+    for i in range(len(length)):
+        tmp = np.max(length[i])
+        if minmax[1] > tmp:
+            minmax = (i+1, tmp)
+    print(f'Centrum minimax: {minmax[0]}')
 
 
 if __name__ == '__main__':
@@ -90,3 +111,7 @@ if __name__ == '__main__':
 
     print()
     shortest_path_matrix(G)
+
+    print()
+    graph_center(G)
+    graph_minimax(G)
