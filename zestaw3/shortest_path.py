@@ -1,6 +1,11 @@
 import numpy as np
 
 def init(matrix, s):
+    """initialization of ds and ps arrays for shortest path algorithm
+    matrix - adjacency matrix (with weights) of given graph (np.ndarray)
+    s - first node in the path (reference to other nodes)
+    returns initialized arrays"""
+
     ds = np.array([np.Inf for _ in range(len(matrix))], dtype=float)
     ps = np.array([np.NaN for _ in range(len(matrix))], dtype=float)
     ds[s] = 0
@@ -8,11 +13,21 @@ def init(matrix, s):
     return ds,ps
 
 def relax(u,v, matrix, /, ps, ds):
+    """ relaxation for shortest path
+    u,v - heighbour nodes (to be relaxed)
+    matrix - adjacency matrix (with weights) of given graph (np.ndarray)
+    ps - previous node in shortest path array
+    ds - array of shortest path lengths starting from beginning of path"""
+
     if ds[v] > ds[u] + matrix[u,v]:
         ds[v] = ds[u] + matrix[u,v]
         ps[v] = u
 
 def dijkstra(beg, matrix):
+    """ Dijkstra's algorithm finding shorthest path in a graph
+    matrix - adjacency matrix (with weights) of the graph (np.ndarray)
+    beg - the first node in the path"""
+
     if len(matrix) != matrix[0].size:
         raise Exception("Wrong matrix sizes")
     if beg <= 0 or beg > len(matrix):
