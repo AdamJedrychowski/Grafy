@@ -27,7 +27,7 @@ def generate_connected_graph(n):
         if dfs(graph):
             break
     graph = lst2adjacency(graph)
-    graph = np.array([[random.randint(1,10) if j else float('inf') for j in i] for i in graph])
+    graph = np.array([[random.randint(1,10) if j else np.inf for j in i] for i in graph])
     draw.draw_graph(graph, coding=draw.Code.WEIGHTED_GRAPH)
 
 
