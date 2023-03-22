@@ -23,7 +23,7 @@ def relax(u,v, matrix, /, ps, ds):
         ds[v] = ds[u] + matrix[u,v]
         ps[v] = u
 
-def dijkstra(beg, matrix):
+def dijkstra(beg, matrix, show=True):
     """ Dijkstra's algorithm finding shorthest path in a graph
     matrix - adjacency matrix (with weights) of the graph (np.ndarray)
     beg - the first node in the path"""
@@ -51,15 +51,23 @@ def dijkstra(beg, matrix):
             
             relax(u,v,matrix, ds=ds, ps=ps)
 
-    for i in range(ps.size):
-        path = [i,]
-        
-        while not np.isnan(ps[path[-1]]):
-            path.append(int(ps[path[-1]]))
-            path[-2] += 1
-        path[-1] += 1
+    if show:
+        for i in range(ps.size):
+            path = [i,]
+            
+            while not np.isnan(ps[path[-1]]):
+                path.append(int(ps[path[-1]]))
+                path[-2] += 1
+            path[-1] += 1
 
-        print(f'{beg} -> {i+1}: {list(reversed(path))}; len: {int(ds[i])}')
+            print(f'{beg} -> {i+1}: {list(reversed(path))}; len: {int(ds[i])}')
+    
+    return ds
+
+
+def shortest_path_matrix(graph):
+    for i in range(1, len(graph)+1):
+        print(dijkstra(i, graph, False))
 
 
 if __name__ == '__main__':
@@ -72,3 +80,6 @@ if __name__ == '__main__':
                 [5, 1, np.Inf, np.Inf, np.Inf, np.Inf, np.Inf]], dtype=float)
 
     dijkstra(1, G)
+    
+    print()
+    shortest_path_matrix(G)
