@@ -44,6 +44,17 @@ def components_inc(graph):
     return components_lst(conversions.inc2list(graph))
 
 
+def component_count_lst(graph):
+    """
+    Count components of a graph
+    - graph - the graph to find components of, represented as an incidence matrix
+    - returns: the number of the graph's components
+    """
+    components = components_lst(graph)
+    return max(components.values())
+
+
 if __name__ == '__main__':
-    graph = randomization.randomize_lst(5, 10)
+    graph = randomization.randomize_lst(5, 3)
     print(components_lst(graph))
+    print(component_count_lst(graph))
