@@ -38,7 +38,6 @@ def generate_connected_graph(n):
                 matrix_graph[j][i] = rand
 
     draw.draw_graph(matrix_graph, coding=draw.Code.WEIGHTED_GRAPH)
-    print(matrix_graph)
     return matrix_graph
 
 
