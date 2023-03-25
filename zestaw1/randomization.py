@@ -58,7 +58,7 @@ def randomize_inc(n, l):
     return conversions.lst2incidence(graph)
 
 
-def randomize_lst_prob(n, p):
+def randomize_lst_prob(n, p, directed=False):
     """
     Randomize a graph based on the provided probability of an edge existing
     - n - number of vertices
@@ -79,7 +79,8 @@ def randomize_lst_prob(n, p):
             rng = random.random()
             if rng <= p:
                 graph[vert].append(end)
-                graph[end].append(vert)
+                if not directed:
+                    graph[end].append(vert)
 
     return graph
 

@@ -2,7 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from enum import Enum
 from zestaw1.conversions import inc2list, adj2list
-import sys
+import numpy as np
 
 class Code(Enum):
     ADJACENCY_MATRIX = 1
@@ -10,6 +10,7 @@ class Code(Enum):
     NEIGHBORHOOD_LIST = 3
     GRAPHICAL_SEQUENCE = 4
     WEIGHTED_GRAPH = 5
+    DIRECTED_GRAPH = 6
 
 
 def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
@@ -21,11 +22,14 @@ def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
     elif coding == Code.MATRIX_INCIDENT:
         graph = inc2list(graph)
 
-    G = nx.Graph()
+    if coding == Code.DIRECTED_GRAPH:
+        G = nx.DiGraph()
+    else:
+        G = nx.Graph()
     if coding == Code.WEIGHTED_GRAPH:
         length = len(graph)
         G.add_nodes_from(range(1,+1))
-        G.add_weighted_edges_from([(i+1,j+1,graph[i][j]) for i in range(length) for j in range(length) if graph[i][j] != sys.maxsize])
+        G.add_weighted_edges_from([(i+1,j+1,graph[i][j]) for i in range(length) for j in range(length) if graph[i][j] != np.inf])
         labels = {i:i for i in range(1,length+1)}
         pos = nx.circular_layout(G)
         edge_labels = nx.get_edge_attributes(G, 'weight')

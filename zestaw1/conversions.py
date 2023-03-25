@@ -8,10 +8,6 @@ class NotSimpleGraph(Exception):
 
 def check_if_simple_adj(matrix):
     """The function checks if the adjacency matrix (parameter) represents a simple graph"""
-
-    # symetric matrix and even sum of degrees
-    if not np.allclose(matrix, matrix.T) or matrix.sum()%2 != 0:
-        raise NotSimpleGraph(message="This is not simple graph! Some egde is direct.",r=matrix)
     
     # without multiple egdes
     for r in matrix:
@@ -37,9 +33,6 @@ def check_if_simple_lst(lst):
                raise NotSimpleGraph(message="This is not simple graph! - Contains multiple egde.",r=lst)
             prev = node
 
-            if k not in lst[node]:
-                raise NotSimpleGraph(message="This is not simple graph! Some egde is direct.",r=lst)
-
 def check_if_simple_inc(matrix):
     """The function checks if the incidence matrix (parameter as np.ndarray) represents a simple graph"""
 
@@ -48,14 +41,12 @@ def check_if_simple_inc(matrix):
             raise NotSimpleGraph(message="This is not simple graph! This is a hypergraph.",r=matrix)
         elif sum(matrix[:,i]) == 1:
             raise NotSimpleGraph(message="This is not simple graph! Only one node in the egde.",r=matrix)
-        elif sum(matrix[:,i]) == 0:
-            raise NotSimpleGraph(message="Wrong coding! And empty edge detected.",r=matrix)    
         elif sum(matrix[:,i]) < 0:
             raise NotSimpleGraph(message="Unknown coding! Negative numbers.",r=matrix)
     
     for row in matrix:
         for v in row:
-            if v!=1 and v!=0:
+            if v!=1 and v!=0 and v!=-1:
                 raise NotSimpleGraph(message="Unknown coding! Only 0/1 values supported.",r=matrix)
     
     for i in range(len(matrix[0])):
@@ -87,7 +78,7 @@ def adj2incidence(matrix):
     return inc
 
 
-def lst2incidence(lst):
+def lst2incidence(lst, directed=False):
     """Conversion from adjacency list into incidence matrix
     - lst - dcitionary parameter that represents adjacency list (with node numbers from 1)
     - returns: matrix (np.ndarray) that is incidence matrix
@@ -96,19 +87,31 @@ def lst2incidence(lst):
     check_if_simple_lst(lst)
 
     s = max(lst)
-    e = int( sum((len(l) for l in lst.values())) )//2
-    inc = np.zeros((s,e), dtype=int)
-    edge_n=0
+    if not directed:
+        e = int( sum((len(l) for l in lst.values())) )//2
+        inc = np.zeros((s,e), dtype=int)
+        edge_n=0
 
-    for i in sorted(lst):
-        for j in lst[i]:
-            if j > i:
-                inc[i-1,edge_n]=1
+        for i in sorted(lst):
+            for j in lst[i]:
+                if j > i:
+                    inc[i-1,edge_n]=1
+                    inc[j-1,edge_n]=1
+                    edge_n += 1
+
+    else:
+        e = int( sum((len(l) for l in lst.values())) )
+        inc = np.zeros((s,e), dtype=int)
+        edge_n=0
+
+        for i in sorted(lst):
+            for j in lst[i]:
+                inc[i-1,edge_n]=-1
                 inc[j-1,edge_n]=1
                 edge_n += 1
     return inc
 
-def inc2list(matrix):
+def inc2list(matrix, directed=False):
     """Conversion from incidence matrix into adjacency list
     - matrix - parameter of type np.ndarray that represents incidence matrix (rows - nodes, columns - edges)
     - returns: lst (dictionary) that is adjacency list
@@ -120,8 +123,14 @@ def inc2list(matrix):
 
     for edge in matrix.T:
         i, = edge.nonzero() # coma for unpacking a tuple
-        lst[i[0] +1].append(i[1] +1)
-        lst[i[1] +1].append(i[0] +1)
+        if not directed:
+            lst[i[1] +1].append(i[0] +1)
+            lst[i[0] +1].append(i[1] +1)
+        else:
+            if edge[i[0]] == -1:
+                lst[i[0] +1].append(i[1] +1)
+            else:
+                lst[i[1] +1].append(i[0] +1)
     
     for l in lst.values():
         l.sort()
@@ -147,7 +156,7 @@ def lst2adjacency(lst):
 
     return adj
 
-def adj2list(matrix):
+def adj2list(matrix, wighted_graph=False):
     """Conversion from adjacency matrix into adjacency list
     - matrix - parameter of type np.ndarray that represents adjacency matrix (rows, cols - number of vertices)
     - returns: list (dictionary) that is adjacency list
@@ -160,7 +169,10 @@ def adj2list(matrix):
 
     for i in range(rows):
         key = i+1
-        vertices = [j+1 for j in range(cols) if matrix[i][j] == 1]
+        if not wighted_graph:
+            vertices = [j+1 for j in range(cols) if matrix[i][j] == 1]
+        else:
+            vertices = [(j+1, matrix[i][j]) for j in range(cols) if matrix[i][j] != np.inf]
         lst[key] = vertices
 
     return lst
