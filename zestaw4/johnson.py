@@ -24,6 +24,12 @@ def add_s(G,w):
 
 
 def johnson(G, w):
+    """
+    Johnson algorithm finds distances bewtween all nodes in directed grapth with negative weights.
+    G - adjastency matrix
+    w - weights dict
+    return D - matrix of distances
+    """
     Gs, ws, s = add_s(G, w)
 
     ds,_,without_neg_c = bellman_ford(Gs, ws, s)
