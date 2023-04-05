@@ -1,31 +1,56 @@
 import numpy as np
+from copy import copy
+import sys
+import os
+from bellman_ford import bellman_ford
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from zestaw3.shortest_path import dijkstra
+import zestaw1.conversions as conv
 
-def add_s(w):
-    s = len(w)
-    w_s = np.array([[w[i,j] if j!=s and i!=s else 0 for j in range(s+1)] for i in range(s+1)])
+def add_s(G,w):
+    s = max(G)+1
 
-    w_s[s,s] = np.inf
-    return w_s
+    g_s = copy(G)
+    g_s[s] = []
 
-def johnson(m):
-    ws = add_s(m)
-    ds = np.zeros(len(ws)) # trzeba zainicjalizować od Bellmana-Forda
+    w_s = copy(w)
+
+    for v in G:
+        g_s[s].append(v)
+
+        w_s[(s,v)] = 0
+
+    return g_s, w_s, s
 
 
-    if not lambda (): "Bellmana jeszcze nie ma. :()":
-        raise Exception("Negative-weight cycle detected.")
+def johnson(G, w):
+    Gs, ws, s = add_s(G, w)
+
+    ds,_,without_neg_c = bellman_ford(Gs, ws, s)
+    
+    if not without_neg_c:
+        raise Exception("Negative cycle detected.")
+
     else:
-        h = np.array([d for d in ds])
+        h = {v: ds[v] for v in Gs}
 
-        w_scale = np.array([[np.inf if isinf(ws[u,v]) else ws[u,j]+h[u]-h[v] for u in range(len(ws))] for v in range(len(ws))])
+        w_daszek = {(u,v): ws[(u,v)] + h[u] - h[v] for u,v in ws}
 
-        D = np.zeros((len(ws), len(ws)))
+        n = len(G)
+        D = np.zeros((n,n))
 
-        for u in range(len(w_scale)):
-            _,du = dijkstra(u, w_scale)
-
-            for v in range(len(w_scale)):
-                D[u,v] = du[v] - h[u] + h[v]
+        G_matrix = np.array([[w_daszek[(j,i)] if i!=j and (j,i) in w_daszek else np.inf for i in range(1,n+1)] for j in range(1,n+1)])
         
+        for u in G:
+            _,du = dijkstra(u,G_matrix, False)
+            for v in G:
+                D[u-1,v-1] = du[v-1] - h[u] + h[v]
+
         return D
+
+
+if __name__ == '__main__':
+    G = {1: [2,3], 2: [1], 3: [2]}
+    w = {(1,2): -1, (2,1): 4, (1,3): -4, (3,2): 2}
+
+    print(johnson(G,w))
