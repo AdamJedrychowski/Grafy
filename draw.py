@@ -28,7 +28,7 @@ def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
         G = nx.Graph()
     if coding == Code.WEIGHTED_GRAPH:
         length = len(graph)
-        G.add_nodes_from(range(1,+1))
+        G.add_nodes_from(range(1,length+1))
         G.add_weighted_edges_from([(i+1,j+1,graph[i][j]) for i in range(length) for j in range(length) if graph[i][j] != np.inf])
         labels = {i:i for i in range(1,length+1)}
         pos = nx.circular_layout(G)
