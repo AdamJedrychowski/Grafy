@@ -4,6 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from zestaw1.randomization import randomize_lst_prob
 from zestaw4.directed_graph import transpose
 import draw
+import random
 
 
 def kosaraju(graph):
@@ -49,8 +50,27 @@ def _components_r(nr, v, graph_t, comp):
             _components_r(nr, u, graph_t, comp)
 
 
+def generate_random_strongly_connected_graph(n, p=0.6):
+    """
+    Generate random strongly connected graph
+    - n - number of vertices
+    - returns: graph as an adjacency list and weights as a dictionary (v_s, v_e): w where v_s is start and v_e end of the edge, w is weight of edge
+    """
+    graph = randomize_lst_prob(n, p, directed=True)
+    comp = kosaraju(graph)
+    while not all(val == 1 for val in comp.values()):
+        graph = randomize_lst_prob(n, p, directed=True)
+        comp = kosaraju(graph)
+    weights = {}
+    for i in range(1, n+1):
+        for j in graph[i]:
+            weight = random.randint(-5, 10)
+            edge = (i, j)
+            weights[edge] = weight
+    return graph, weights
+
+
 if __name__ == '__main__':
-    graph = randomize_lst_prob(6, 0.3, directed=True)
+    graph, _ = generate_random_strongly_connected_graph(6, 0.3)
     print(kosaraju(graph))
     draw.draw_graph(graph, coding=draw.Code.DIRECTED_GRAPH)
-    #!

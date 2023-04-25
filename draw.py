@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from enum import Enum
 from zestaw1.conversions import inc2list, adj2list
 import numpy as np
+import atexit
 
 class Code(Enum):
     ADJACENCY_MATRIX = 1
@@ -17,6 +18,7 @@ def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
     """The function draws graph on circle layout
     - graph - representation of graph
     - coding - which representation is passed, values from Code"""
+    plt.figure()
     if coding == Code.ADJACENCY_MATRIX:
         graph = adj2list(graph)
     elif coding == Code.MATRIX_INCIDENT:
@@ -43,5 +45,12 @@ def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
     nx.draw_networkx_nodes(G, pos, node_color='lightblue', node_size=500)
     nx.draw_networkx_edges(G, pos, edge_color='gray', width=2)
     nx.draw_networkx_labels(G, pos, labels)
-    plt.show()
-    #! multiple
+    plt.show(block=False)
+
+
+def cleanup():
+    if plt.get_fignums():
+        plt.pause(120)
+        plt.close()
+
+atexit.register(cleanup)

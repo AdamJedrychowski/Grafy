@@ -88,6 +88,6 @@ def find_euler_cycle_lst(graph):
 
 if __name__ == '__main__':
     graph = generate_euler_graph_lst(6)
+    draw_graph(graph)
     print(graph)
     print(find_euler_cycle_lst(graph))
-    draw_graph(graph)
