@@ -43,6 +43,8 @@ def check_if_simple_inc(matrix):
             raise NotSimpleGraph(message="This is not simple graph! Only one node in the egde.",r=matrix)
         elif sum(matrix[:,i]) < 0:
             raise NotSimpleGraph(message="Unknown coding! Negative numbers.",r=matrix)
+        elif sum(matrix[:,i]) == 0:
+            raise NotSimpleGraph(message="Empty edge.",r=matrix)
     
     for row in matrix:
         for v in row:
@@ -235,6 +237,7 @@ if __name__ == '__main__':
     np.array([[1, 1],[1,1], [0,1]]),\
 
     np.array([[1, 0, 0],[1,0,1], [0,0,1]]),\
+    np.array([[1, 1, 0],[1,0,1], [0,1,1]]),\
     np.array([[1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0],\
         [1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0],\
         [0,1,1,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0],\
