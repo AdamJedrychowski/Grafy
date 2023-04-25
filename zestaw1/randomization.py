@@ -1,7 +1,10 @@
 import random
 import numpy as np
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from zestaw1 import conversions
-
+import draw
 
 def randomize_lst(n, l):
     """
@@ -108,5 +111,7 @@ def randomize_inc_prob(n, p):
 
 
 if __name__ == '__main__':
-    print(randomize_adj(5, 10))
-    print(randomize_adj_prob(5, 0.5))
+    print(graph:=randomize_adj(5, 6), end='\n\n')
+    draw.draw_graph(graph, draw.Code.ADJACENCY_MATRIX)
+    print(graph:=randomize_adj_prob(5, 0.5))
+    draw.draw_graph(graph, draw.Code.ADJACENCY_MATRIX)

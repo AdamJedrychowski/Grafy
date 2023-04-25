@@ -44,3 +44,4 @@ def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
     nx.draw_networkx_edges(G, pos, edge_color='gray', width=2)
     nx.draw_networkx_labels(G, pos, labels)
     plt.show()
+    #! multiple

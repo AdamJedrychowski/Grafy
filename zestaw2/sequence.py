@@ -15,6 +15,7 @@ def graphical_sequence(nodes):
         if i % 2 == 1:
             negative += 1
     if negative % 2 == 1:
+        print('Ciąg nie jest ciągiem graficznym')
         return False, None
 
     neighbors = {i: [] for i in range(1, len(nodes)+1)}
@@ -25,6 +26,7 @@ def graphical_sequence(nodes):
             return True, neighbors
         
         if nodes[0][1] >= len(nodes):
+            print('Ciąg nie jest ciągiem graficznym')
             return False, None
         
         for i in range(1, nodes[0][1]+1):

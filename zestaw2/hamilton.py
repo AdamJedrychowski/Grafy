@@ -1,4 +1,7 @@
-
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import draw
 
 def hamiltonian_cycle(graph, visited = None, cycle = None, node = None):
     """
@@ -57,9 +60,12 @@ if __name__ == '__main__':
         }]
 
     for graph in graphs:
+        print(graph)
+        draw.draw_graph(graph)
         cycle = hamiltonian_cycle(graph)
         if cycle:
             print("Hamiltonian cycle ", cycle)
         else:
             print("Not found")
+        print()
 

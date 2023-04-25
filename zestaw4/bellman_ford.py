@@ -52,25 +52,22 @@ def bellman_ford(graph, weights, start):
 
 
 if __name__ == '__main__':
-    graph, weights = generate_random_strongly_connected_graph(5)
-    dist, prev, status = bellman_ford(graph, weights, 1)
-    if status == True:
-        print("Losowy silnie spójny graf:")
-        print(graph)
-        print("Silnie spójne składowe:")
-        print(kosaraju(graph))
-        print("Wagi krawędzi:")
-        print(weights)
-        print("Najkrótsze ścieżki:")
-        print(bellman_ford(graph, weights, 1))
-        print()
-        for i in range(1,len(graph)+1):
-            dist, prev, status = bellman_ford(graph, weights, i)
-            print(dist)
-        draw.draw_graph(graph, coding=draw.Code.DIRECTED_GRAPH)
-    else:
-        print("W grafie jest cykl o ujemnej wadze")
-
-    
-
-
+    while True:
+        graph, weights = generate_random_strongly_connected_graph(5)
+        dist, prev, status = bellman_ford(graph, weights, 1)
+        if status == True:
+            print("Losowy silnie spójny graf:")
+            print(graph)
+            print("Silnie spójne składowe:")
+            print(kosaraju(graph))
+            print("Wagi krawędzi:")
+            print(weights)
+            print("Najkrótsze ścieżki:")
+            print(bellman_ford(graph, weights, 1))
+            print()
+            for i in range(1,len(graph)+1):
+                dist, prev, status = bellman_ford(graph, weights, i)
+                print(dist)
+            draw.draw_graph(graph, coding=draw.Code.DIRECTED_GRAPH)
+            break
+            #!

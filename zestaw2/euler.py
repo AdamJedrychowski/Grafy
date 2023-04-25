@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import random
 from draw import draw_graph
 from zestaw2.components import component_count_lst
@@ -86,5 +89,5 @@ def find_euler_cycle_lst(graph):
 if __name__ == '__main__':
     graph = generate_euler_graph_lst(6)
     print(graph)
-    draw_graph(graph)
     print(find_euler_cycle_lst(graph))
+    draw_graph(graph)

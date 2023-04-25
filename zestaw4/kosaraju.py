@@ -1,6 +1,9 @@
-import draw
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from zestaw1.randomization import randomize_lst_prob
 from zestaw4.directed_graph import transpose
+import draw
 
 
 def kosaraju(graph):
@@ -50,3 +53,4 @@ if __name__ == '__main__':
     graph = randomize_lst_prob(6, 0.3, directed=True)
     print(kosaraju(graph))
     draw.draw_graph(graph, coding=draw.Code.DIRECTED_GRAPH)
+    #!

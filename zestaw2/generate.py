@@ -6,6 +6,7 @@ import random
 
 def generate_regular_graph(n, k):
     if k >= n or (k%2 == 1 and n%2 == 1):
+        #!
         return
     _, graph = graphical_sequence([k for _ in range(n)])
     if k+1 == n:
