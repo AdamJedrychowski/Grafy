@@ -197,6 +197,9 @@ def inc2adjacency(matrix):
 
 
 if __name__ == '__main__':
+
+    print('* Adjastency matrix to incidence matrix *\n')
+
     graphs = [np.array([[1,2],[3,4]]),\
     np.array([[1,2],[2,1]]),\
     np.array([[1,0],[0,1]]),\
@@ -208,10 +211,11 @@ if __name__ == '__main__':
 
     for m in graphs:
         try:
-            print(adj2incidence(m), '\n')
+            print(m, '\n \\/\n \\/\n', adj2incidence(m), '\n')
         except NotSimpleGraph as e:
             print(e, '\n')
 
+    print('* Adjastency list to incidence matrix *\n')
 
     graphs = [{1: [2,3,3], 2:[1], 3:[1,1]},\
     {1:[1,2], 2: [1]}, {1:[3], 2:[1], 3:[1]},\
@@ -224,12 +228,13 @@ if __name__ == '__main__':
     for l in graphs:
         try:
             # check_if_simple_lst(l)
-            print(lst2incidence(l), '\n')
+            print(l, '\n \\/\n \\/\n', lst2incidence(l), '\n')
         except NotSimpleGraph as e:
             print(e,'\n')
         # else:
         #     print("OK\n")
 
+    print('* Incidence matrix to adjastency list *\n')
     
     graphs = [np.array([[1,0],[1,1]]),\
     np.array([[1,0, 2],[1,1,0], [0,1,0]]),\
@@ -255,7 +260,7 @@ if __name__ == '__main__':
 
     for m in graphs:
         try:
-            print(inc2list(m))
+            print(m, '\n \\/\n \\/\n', inc2list(m), '\n')
         except NotSimpleGraph as e:
             print(e, '\n')
 
@@ -268,7 +273,7 @@ if __name__ == '__main__':
     print('* Adjacency list to adjacency matrix *', '\n')
     for l in graphs:
         try:
-            print(lst2adjacency(l), '\n')
+            print(l, '\n \\/\n \\/\n', lst2adjacency(l), '\n')
         except Exception as e:
             print(e,'\n')
 
@@ -287,7 +292,7 @@ if __name__ == '__main__':
     print('* Adjacency matrix to adjacency list *', '\n')
     for m in graphs:
         try:
-            print(adj2list(m), '\n')
+            print(m, '\n \\/\n \\/\n', adj2list(m), '\n')
         except Exception as e:
             print(e, '\n')
 
@@ -299,6 +304,6 @@ if __name__ == '__main__':
     print('* Incidence matrix to adjacency matrix *', '\n')
     for m in graphs:
         try:
-            print(inc2adjacency(m), '\n')
+            print(m, '\n \\/\n \\/\n', inc2adjacency(m), '\n')
         except Exception as e:
             print(e, '\n')
