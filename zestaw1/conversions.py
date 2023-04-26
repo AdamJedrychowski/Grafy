@@ -44,7 +44,11 @@ def check_if_simple_inc(matrix):
         elif sum(matrix[:,i]) < 0:
             raise NotSimpleGraph(message="Unknown coding! Negative numbers.",r=matrix)
         elif sum(matrix[:,i]) == 0:
-            raise NotSimpleGraph(message="Empty edge.",r=matrix)
+            for v in matrix[:,i]:
+                if v != 0:
+                    break
+            else:
+                raise NotSimpleGraph(message="Empty edge.",r=matrix)
     
     for row in matrix:
         for v in row:
