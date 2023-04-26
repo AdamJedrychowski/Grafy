@@ -111,7 +111,7 @@ def randomize_inc_prob(n, p):
 
 
 if __name__ == '__main__':
-    print(graph:=randomize_adj(5, 6), end='\n\n')
+    print(graph:=randomize_adj(20, 189), end='\n\n')
     draw.draw_graph(graph, draw.Code.ADJACENCY_MATRIX)
-    print(graph:=randomize_adj_prob(5, 0.5))
+    print(graph:=randomize_adj_prob(20, 0.01))
     draw.draw_graph(graph, draw.Code.ADJACENCY_MATRIX)

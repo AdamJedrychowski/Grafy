@@ -208,7 +208,7 @@ if __name__ == '__main__':
     np.array([[1,2],[2,1]]),\
     np.array([[1,0],[0,1]]),\
     np.array([[0,1],[1,0]]),\
-    np.array([[0,1,1,1],[1,0,0,0],[1,0,0,1],[1,0,1,0]]),\
+    np.array([[0,1,1,1,1],[1,0,0,0,0],[1,0,0,1,0],[1,0,1,0,1], [1,0,0,1,0]]),\
     np.array([[0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],[1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0],[0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1],[0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0],[1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0],[1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],[0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0],[0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1],[0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0]]),\
     np.array([[0, 0, 0],[0,0,1],[0,1,0]])
     ]
@@ -273,13 +273,19 @@ if __name__ == '__main__':
         {1:[1,2], 2: [1]},\
         {1:[2,3,4], 2:[1,3,4,5], 3:[1,2,5], 4:[1,2,5], 5:[2,3,4]},
         {1:[], 2:[3], 3:[2]}, ]
+    
+    import sys
+    import os
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    # import draw
+    # draw.draw_graph(graphs[-1])
 
-    print('* Adjacency list to adjacency matrix *', '\n')
-    for l in graphs:
-        try:
-            print(l, '\n \\/\n \\/\n', lst2adjacency(l), '\n')
-        except Exception as e:
-            print(e,'\n')
+    # print('* Adjacency list to adjacency matrix *', '\n')
+    # for l in graphs:
+    #     try:
+    #         print(l, '\n \\/\n \\/\n', lst2adjacency(l), '\n')
+    #     except Exception as e:
+    #         print(e,'\n')
 
 
 
