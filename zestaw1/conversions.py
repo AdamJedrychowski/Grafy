@@ -6,8 +6,13 @@ class NotSimpleGraph(Exception):
         self.message=message
         self.represent=r
 
-def check_if_simple_adj(matrix):
+def check_if_simple_adj(matrix, direct=False):
     """The function checks if the adjacency matrix (parameter) represents a simple graph"""
+
+    # symetric matrix and even sum of degrees
+    if not direct:
+        if not np.allclose(matrix, matrix.T) or matrix.sum()%2 != 0:
+            raise NotSimpleGraph(message="This is not simple graph! Some egde is direct.",r=matrix)
     
     # without multiple egdes
     for r in matrix:
@@ -20,7 +25,7 @@ def check_if_simple_adj(matrix):
         if d!=0:
             raise NotSimpleGraph(message="This is not simple graph! Countains loop.",r=matrix)
 
-def check_if_simple_lst(lst):
+def check_if_simple_lst(lst, direct=False):
     """The function checks if the adjacency list (parameter as dict - nodes counting from 1) represents a simple graph"""
 
     for k in lst:
@@ -33,7 +38,11 @@ def check_if_simple_lst(lst):
                raise NotSimpleGraph(message="This is not simple graph! - Contains multiple egde.",r=lst)
             prev = node
 
-def check_if_simple_inc(matrix):
+            if not direct:
+                if k not in lst[node]:
+                    raise NotSimpleGraph(message="This is not simple graph! Some egde is direct.",r=lst)
+
+def check_if_simple_inc(matrix, direct=False):
     """The function checks if the incidence matrix (parameter as np.ndarray) represents a simple graph"""
 
     for i in range(len(matrix[0])):
@@ -41,19 +50,16 @@ def check_if_simple_inc(matrix):
             raise NotSimpleGraph(message="This is not simple graph! This is a hypergraph.",r=matrix)
         elif sum(matrix[:,i]) == 1:
             raise NotSimpleGraph(message="This is not simple graph! Only one node in the egde.",r=matrix)
+        elif (not direct) and sum(matrix[:,i]) == 0:
+            raise NotSimpleGraph(message="Wrong coding! An empty edge detected.",r=matrix)  
         elif sum(matrix[:,i]) < 0:
             raise NotSimpleGraph(message="Unknown coding! Negative numbers.",r=matrix)
-        elif sum(matrix[:,i]) == 0:
-            for v in matrix[:,i]:
-                if v != 0:
-                    break
-            else:
-                raise NotSimpleGraph(message="Empty edge.",r=matrix)
     
     for row in matrix:
         for v in row:
-            if v!=1 and v!=0 and v!=-1:
-                raise NotSimpleGraph(message="Unknown coding! Only 0/1 values supported.",r=matrix)
+            if v!=1 and v!=0:
+                if (not direct) or direct and v!=-1:
+                    raise NotSimpleGraph(message="Unknown coding! Only 0/1 values supported.",r=matrix)
     
     for i in range(len(matrix[0])):
         for j in range(i+1,len(matrix[0])):
@@ -90,7 +96,7 @@ def lst2incidence(lst, directed=False):
     - returns: matrix (np.ndarray) that is incidence matrix
     - raises NotSimpleGraph if the graph represented by list is not simple"""
 
-    check_if_simple_lst(lst)
+    check_if_simple_lst(lst, directed)
 
     s = max(lst)
     if not directed:
@@ -123,7 +129,7 @@ def inc2list(matrix, directed=False):
     - returns: lst (dictionary) that is adjacency list
     - raises NotSimpleGraph if the graph represented by matrix is not simple"""
 
-    check_if_simple_inc(matrix)
+    check_if_simple_inc(matrix, directed)
 
     lst = {i+1: [] for i in range(len(matrix))}
 
@@ -222,7 +228,7 @@ if __name__ == '__main__':
     print('* Adjastency list to incidence matrix *\n')
 
     graphs = [{1: [2,3,3], 2:[1], 3:[1,1]},\
-    {1:[1,2], 2: [1]},\
+    {1:[1,2], 2: [1]}, {1:[3], 2:[1], 3:[1]},\
     {1:[2,3,4], 2:[1], 3:[1,4], 4:[1,3]},
     {1:[], 2:[3], 3:[2]},\
     {1:[2,5,6], 2:[1,3,6], 3:[2,4,5,12], 4:[3,8,9,11],\
@@ -270,7 +276,7 @@ if __name__ == '__main__':
 
 
     graphs = [{1: [2,3,3], 2:[1], 3:[1,1]},\
-        {1:[1,2], 2: [1]},\
+        {1:[1,2], 2: [1]}, {1:[3], 2:[1], 3:[1]},\
         {1:[2,3,4], 2:[1,3,4,5], 3:[1,2,5], 4:[1,2,5], 5:[2,3,4]},
         {1:[], 2:[3], 3:[2]}, ]
     
