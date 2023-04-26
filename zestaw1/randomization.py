@@ -74,9 +74,9 @@ def randomize_lst_prob(n, p, directed=False):
     graph = {idx: [] for idx in range(1, n + 1)}
 
     for vert in graph.keys():
-        for end in [i for i in range(1, n + 1) if i != vert]:
+        for end in [i for i in (range(vert + 1, n + 1) if not directed else range(1, n + 1))]:
             # Avoid duplicates
-            if end in graph[vert]:
+            if end in graph[vert] and not directed:
                 continue
 
             rng = random.random()
@@ -111,7 +111,13 @@ def randomize_inc_prob(n, p):
 
 
 if __name__ == '__main__':
-    print(graph:=randomize_adj(20, 189), end='\n\n')
-    draw.draw_graph(graph, draw.Code.ADJACENCY_MATRIX)
-    print(graph:=randomize_adj_prob(20, 0.01))
+<<<<<<< HEAD
+    print(graph:=randomize_adj(5, 6), end='\n\n')
+    #draw.draw_graph(graph, draw.Code.ADJACENCY_MATRIX)
+    print(graph:=randomize_adj_prob(5, 0.5))
+=======
+    print(graph:=randomize_adj(5, 6), end='\n\n')
+    #draw.draw_graph(graph, draw.Code.ADJACENCY_MATRIX)
+    print(graph:=randomize_adj_prob(5, 0.5))
+>>>>>>> 2166a0c0313ca56b265231557151cdd09454705c
     draw.draw_graph(graph, draw.Code.ADJACENCY_MATRIX)
