@@ -25,6 +25,8 @@ def kosaraju(graph):
 
     comp = {i: -1 for i in graph_t}
 
+    stack.reverse()
+
     for v in stack:
         if comp[v] == -1:
             nr += 1
@@ -54,7 +56,8 @@ def generate_random_strongly_connected_graph(n, p=0.6):
     """
     Generate random strongly connected graph
     - n - number of vertices
-    - returns: graph as an adjacency list and weights as a dictionary (v_s, v_e): w where v_s is start and v_e end of the edge, w is weight of edge
+    - returns: graph as an adjacency list and weights as a dictionary (v_s, v_e): w
+                where v_s is start and v_e end of the edge, w is weight of edge
     """
     graph = randomize_lst_prob(n, p, directed=True)
     comp = kosaraju(graph)
@@ -71,6 +74,6 @@ def generate_random_strongly_connected_graph(n, p=0.6):
 
 
 if __name__ == '__main__':
-    graph, _ = generate_random_strongly_connected_graph(6, 0.3)
+    graph = randomize_lst_prob(6, 0.3, directed=True)
     print(kosaraju(graph))
     draw.draw_graph(graph, coding=draw.Code.DIRECTED_GRAPH)

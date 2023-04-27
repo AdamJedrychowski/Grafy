@@ -1,5 +1,8 @@
 import sys
 import os
+
+import draw
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from zestaw1 import randomization, conversions
 
@@ -59,5 +62,15 @@ def component_count_lst(graph):
 
 if __name__ == '__main__':
     graph = randomization.randomize_lst(5, 3)
-    print(components_lst(graph))
-    print(component_count_lst(graph))
+    draw.draw_graph(graph)
+    components = components_lst(graph)
+
+    vertices_by_component = {i: [v for v, j in components.items() if j == i] for i in components.values()}
+    for component in vertices_by_component.items():
+        print(component[0], component[1])
+
+    component_counts = {i: 0 for i in components.values()}
+    for component in components:
+        component_counts[components[component]] += 1
+
+    print("Największa składowa ma numer", max(component_counts.items(), key=lambda x: x[1])[0])

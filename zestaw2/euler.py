@@ -62,26 +62,29 @@ def find_euler_cycle_lst(graph):
     - graph - the graph to find an Euler cycle in
     - returns: a list containing the found Euler cycle
     """
+
+    graph_cpy = {v: [u for u in graph[v]] for v in graph}
+
     cycle = [1]
 
-    while len(graph.keys()) > 0:
-        for v in graph[cycle[-1]].copy():
-            graph[cycle[-1]].remove(v)
-            if component_count_lst(graph) > 1:
-                graph[cycle[-1]].append(v)
+    while len(graph_cpy.keys()) > 0:
+        for v in graph_cpy[cycle[-1]].copy():
+            graph_cpy[cycle[-1]].remove(v)
+            if component_count_lst(graph_cpy) > 1:
+                graph_cpy[cycle[-1]].append(v)
                 continue
-            graph[v].remove(cycle[-1])
+            graph_cpy[v].remove(cycle[-1])
             cycle.append(v)
             break
         else:
-            v = graph[cycle[-1]].pop()
-            graph[v].remove(cycle[-1])
+            v = graph_cpy[cycle[-1]].pop()
+            graph_cpy[v].remove(cycle[-1])
             cycle.append(v)
             break
 
-        for v in tuple(graph.keys()):
-            if not len(graph[v]):
-                graph.pop(v)
+        for v in tuple(graph_cpy.keys()):
+            if not len(graph_cpy[v]):
+                graph_cpy.pop(v)
 
     return cycle
 

@@ -74,7 +74,7 @@ def randomize_lst_prob(n, p, directed=False):
     graph = {idx: [] for idx in range(1, n + 1)}
 
     for vert in graph.keys():
-        for end in [i for i in (range(vert + 1, n + 1) if not directed else range(1, n + 1))]:
+        for end in [i for i in (range(vert + 1, n + 1) if not directed else range(1, n + 1)) if i != vert]:
             # Avoid duplicates
             if end in graph[vert] and not directed:
                 continue
