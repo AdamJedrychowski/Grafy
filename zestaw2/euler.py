@@ -4,6 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import random
 from draw import draw_graph
 from zestaw2.components import component_count_lst
+from zestaw1.randomization import randomize_lst
 
 
 def _get_degrees_lst(graph):
@@ -63,7 +64,11 @@ def find_euler_cycle_lst(graph):
     - returns: a list containing the found Euler cycle
     """
 
-    graph_cpy = {v: [u for u in graph[v]] for v in graph}
+    for v in graph:
+        if len(graph[v]) % 2 != 0:
+            raise ValueError("Podany graf nie jest eulerowski!")
+
+    graph_cpy = {v: [u for u in v_dests] for v, v_dests in graph.items()}
 
     cycle = [1]
 
@@ -91,6 +96,10 @@ def find_euler_cycle_lst(graph):
 
 if __name__ == '__main__':
     graph = generate_euler_graph_lst(6)
+    #graph = randomize_lst(5, 6)
     draw_graph(graph)
     print(graph)
-    print(find_euler_cycle_lst(graph))
+    try:
+        print(find_euler_cycle_lst(graph))
+    except ValueError as e:
+        print(e)
