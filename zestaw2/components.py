@@ -1,11 +1,8 @@
 import sys
 import os
-
-import draw
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from zestaw1 import randomization, conversions
-
+import draw
 
 def components_lst(graph):
     """
