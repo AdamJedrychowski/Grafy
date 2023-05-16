@@ -97,7 +97,10 @@ def graph_minimax(graph):
             minmax = (i+1, tmp)
     print(f'Centrum minimax: {minmax[0]}')
 
-
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from zestaw3.connected import generate_connected_graph
 if __name__ == '__main__':
     G = np.array([[np.Inf, 8, np.Inf, 9, 3, 9, 5],
                 [8, np.Inf, np.Inf, 2, 4, np.Inf, 1],
@@ -106,6 +109,21 @@ if __name__ == '__main__':
                 [3, 4, np.Inf, np.Inf, np.Inf, 4, np.Inf],
                 [9, np.Inf, 4, 9, 4, np.Inf, np.Inf],
                 [5, 1, np.Inf, np.Inf, np.Inf, np.Inf, np.Inf]], dtype=float)
+
+    dijkstra(1, G)
+
+    print()
+    shortest_path_matrix(G)
+
+    print()
+    graph_center(G)
+    graph_minimax(G)
+
+    ###
+    print("\n---random---\n")
+
+    G = generate_connected_graph(5)
+    print(G,'\n')
 
     dijkstra(1, G)
 
