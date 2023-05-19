@@ -45,12 +45,4 @@ def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
     nx.draw_networkx_nodes(G, pos, node_color='lightblue', node_size=500)
     nx.draw_networkx_edges(G, pos, edge_color='gray', width=2)
     nx.draw_networkx_labels(G, pos, labels)
-    plt.show(block=False)
-
-
-def cleanup():
-    if plt.get_fignums():
-        plt.pause(120)
-        plt.close()
-
-atexit.register(cleanup)
+    plt.show()
