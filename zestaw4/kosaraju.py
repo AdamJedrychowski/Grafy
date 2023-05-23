@@ -75,5 +75,14 @@ def generate_random_strongly_connected_graph(n, p=0.6):
 
 if __name__ == '__main__':
     graph = randomize_lst_prob(6, 0.3, directed=True)
-    print(kosaraju(graph))
+    components = kosaraju(graph)
+    print(components, end="\n\n")
+
+    groups = {}
+    for v, g in components.items():
+        groups.setdefault(g, []).append(v)
+
+    for group in sorted(groups.keys()):
+        print(group, groups[group], sep=": ")
+
     draw.draw_graph(graph, coding=draw.Code.DIRECTED_GRAPH)
