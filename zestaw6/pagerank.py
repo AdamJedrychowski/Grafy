@@ -5,7 +5,7 @@ def check_list_dangling(lst):
         if not out:
             raise Exception("Dangling nodes!")
 
-def random_walk(lst, N, d=0.15):
+def random_walk(lst, *, N, d=0.15):
     check_list_dangling(lst)
 
     ks = list(lst.keys())
