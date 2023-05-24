@@ -24,7 +24,7 @@ def transpose(graph):
 if __name__ == '__main__':
     graph = randomize_lst_prob(6, 0.3, directed=True)
     print(graph, end='\n\n')
-    draw.draw_graph(graph, coding=draw.Code.DIRECTED_GRAPH)
 
-    print(lst2adjacency(graph), end='\n\n')
+    print(lst2adjacency(graph, True), end='\n\n')
     print(lst2incidence(graph, directed=True), end='\n\n')
+    draw.draw_graph(graph, coding=draw.Code.DIRECTED_GRAPH)

@@ -151,13 +151,13 @@ def inc2list(matrix, directed=False):
 
 
 
-def lst2adjacency(lst):
+def lst2adjacency(lst, direct=False):
     """Conversion from adjacency list into adjacency matrix
     - lst - dcitionary parameter that represents adjacency list (with node numbers from 1)
     - returns: matrix (np.ndarray) that is adjacency matrix
     - raises NotSimpleGraph if the graph represented by list is not simple"""
 
-    check_if_simple_lst(lst)
+    check_if_simple_lst(lst, direct)
 
     size = max(lst)
     adj = np.zeros((size, size), dtype=int)
