@@ -5,6 +5,7 @@ import os
 from bellman_ford import bellman_ford
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from zestaw3.shortest_path import dijkstra
+import draw
 import zestaw1.conversions as conv
 
 def add_s(G,w):
@@ -59,4 +60,7 @@ if __name__ == '__main__':
     G = {1: [2,3], 2: [1], 3: [2]}
     w = {(1,2): -1, (2,1): 4, (1,3): -4, (3,2): 2}
 
+    print(w)
+
     print(johnson(G,w))
+    draw.draw_graph(G, draw.Code.DIRECTED_GRAPH)
