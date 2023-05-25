@@ -32,17 +32,15 @@ def draw_graph(graph, coding=Code.NEIGHBORHOOD_LIST):
         length = len(graph)
         G.add_nodes_from(range(1,length+1))
         G.add_weighted_edges_from([(i+1,j+1,graph[i][j]) for i in range(length) for j in range(length) if graph[i][j] != np.inf])
-        labels = {i:i for i in range(1,length+1)}
         pos = nx.circular_layout(G)
         edge_labels = nx.get_edge_attributes(G, 'weight')
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, verticalalignment='bottom', font_size=12)
     else:
         G.add_nodes_from(graph.keys())
         G.add_edges_from([(i,j) for i in graph.keys() for j in graph[i]])
-        labels = {i:j for i,j in enumerate(graph.keys(), start=1)}
         pos = nx.circular_layout(G)
 
     nx.draw_networkx_nodes(G, pos, node_color='lightblue', node_size=500)
     nx.draw_networkx_edges(G, pos, edge_color='gray', width=2)
-    nx.draw_networkx_labels(G, pos, labels)
+    nx.draw_networkx_labels(G, pos)
     plt.show()

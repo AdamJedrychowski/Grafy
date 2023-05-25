@@ -4,6 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from zestaw1.conversions import lst2adjacency
 import random
 import numpy as np
+import draw
 
 def check_list_dangling(lst):
     for out in lst.values():
@@ -20,7 +21,7 @@ def random_walk(lst, *, N, d=0.15):
 
     for _ in range(N):
         if random.random() < d:
-            node = random.choice([n for n in ks  if n!=node])
+            node = random.choice(ks)#[n for n in ks  if n!=node])
         else:
             node = random.choice(lst[node])
         visited[node] += 1
@@ -70,3 +71,6 @@ if __name__ == '__main__':
     for p in rank.items():
         print(f'   {p[0]}: {p[1]:.5f}')
     print(f'   Zbieżność po {zb} iteracjach.')
+
+
+    draw.draw_graph(www, coding=draw.Code.DIRECTED_GRAPH)
