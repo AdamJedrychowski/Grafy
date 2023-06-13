@@ -57,20 +57,27 @@ def vector_iteration(lst, *, eps=1e-6, d=0.15):
     return dict(sorted(visited.items(), key=lambda item: item[1], reverse=True)), it
 
 if __name__ == '__main__':
-    www = {'A':['D','E','B'], 'B':['E','C'], 'C':['B','D','F'], 'D':['B'], 'E':['D','B','F'], 'F':['B']}
+    sites = [\
+        {'A':['D','E','B'], 'B':['E','C'], 'C':['B','D','F'], 'D':['B'], 'E':['D','B','F'], 'F':['B']},\
+        {'A':['E','F','I'], 'B':['A','C','F'], 'C':['B','D','E','L'], 'D':['C','E','H','I','K'], 'E':['C','G','H','I'], 'F':['B','G'], 'G':['E','F','H'], 'H':['D','G','I','L'], 'I':['D','E','H','J'], 'J':['I'], 'K':['D','I'], 'L':['A','H']}\
+        ]
 
-    print(f"Graf: {www}\n")
+    n = 100_000
+    for www in sites:
+        print(f"Graf: {www}\n")
 
-    rank = random_walk(www, N=100_000)
-    print("Błądzenie losowe:")
-    for p in rank.items():
-        print(f'   {p[0]}: {p[1]:.5f}')
+        rank = random_walk(www, N=n)
+        print("Błądzenie losowe:")
+        for p in rank.items():
+            print(f'   {p[0]}: {p[1]:.5f}')
 
-    rank,zb = vector_iteration(www, eps=1e-9)
-    print("\nMetoda iteracji wektora obsadzeń:")
-    for p in rank.items():
-        print(f'   {p[0]}: {p[1]:.5f}')
-    print(f'   Zbieżność po {zb} iteracjach.')
+        rank,zb = vector_iteration(www, eps=1e-9)
+        print("\nMetoda iteracji wektora obsadzeń:")
+        for p in rank.items():
+            print(f'   {p[0]}: {p[1]:.5f}')
+        print(f'   Zbieżność po {zb} iteracjach.')
 
 
-    draw.draw_graph(www, coding=draw.Code.DIRECTED_GRAPH)
+        draw.draw_graph(www, coding=draw.Code.DIRECTED_GRAPH)
+        n*=10
+        print('')
