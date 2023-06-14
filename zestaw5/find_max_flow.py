@@ -1,6 +1,8 @@
 import math
 
-from zestaw5.generate_flow_network import generate_flow_network, draw_flow_network
+import numpy as np
+
+from generate_flow_network import generate_flow_network, draw_flow_network
 
 
 def get_residual(graph, flow):
@@ -103,15 +105,21 @@ def flow_to_network(flow, graph):
     - flow - flow matrix
     - returns: flow network with capacities equal to flow values
     """
-    network = [[flow[i][j] if not math.isinf(u) else u for j, u in enumerate(v)] for i, v in enumerate(graph)]
+    network = np.array([[flow[i][j] if not math.isinf(u) else u for j, u in enumerate(v)] for i, v in enumerate(graph)])
     return network
 
 
 if __name__ == '__main__':
     graph, layers = generate_flow_network(2)
 
+    print('\nnetwork:')
+    print(graph)
+
     flow = ford_fulkerson(graph)
 
+    print('\nmax flow:')
     print(flow)
 
     draw_flow_network(flow, layers)
+
+    print('\nMax flow value:', sum([v[-1] for v in flow if v[-1] != float('inf')]))
