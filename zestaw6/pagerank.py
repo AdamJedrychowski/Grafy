@@ -66,10 +66,11 @@ if __name__ == '__main__':
     for www in sites:
         print(f"Graf: {www}\n")
 
+        print(f'N={n}')
         rank = random_walk(www, N=n)
         print("Błądzenie losowe:")
         for p in rank.items():
-            print(f'   {p[0]}: {p[1]:.5f}')
+            print(f'   {p[0]}: {p[1]}')
 
         rank,zb = vector_iteration(www, eps=1e-9)
         print("\nMetoda iteracji wektora obsadzeń:")
