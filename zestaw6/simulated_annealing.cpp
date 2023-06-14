@@ -40,7 +40,7 @@ std::vector<int> algorithm(std::vector<Vertex>& vertices) {
     int distance = 0;
     double T;
     int a, b, c, d;
-    double r, p;
+    double r;
     std::vector<int> curr_cycle(n);
     std::vector<int> new_cycle(n);
 
@@ -49,7 +49,7 @@ std::vector<int> algorithm(std::vector<Vertex>& vertices) {
     }
 
     double curr_length = cycle_length(vertices, curr_cycle);
-
+    std::cout << "first distance: " << curr_length << std::endl;
     for (int i = 100; i >= 1; i--) {
         T = 0.001 * pow(i, 2);
         for (int it = 0; it < MAX_IT; it++) {
@@ -109,7 +109,7 @@ int main() {
     std::ofstream outputFile("data_cycle.dat"); 
 
     if (outputFile.is_open()){
-        for (int i = 0; i < vertices.size(); i++){
+        for (unsigned int i = 0; i < vertices.size(); i++){
             outputFile << vertices[best_cycle[i]].x << " " << vertices[best_cycle[i]].y << std::endl;
         }
         outputFile << vertices[best_cycle[0]].x << " " << vertices[best_cycle[0]].y << std::endl;
